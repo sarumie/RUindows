@@ -22,5 +22,4 @@ public class Main extends Application {
 		ps.setTitle("Init");
 		ps.show();
 	}
-
 }
