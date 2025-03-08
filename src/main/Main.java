@@ -16,7 +16,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage ps) throws Exception {
 		gp = new GridPane();
-		sc = new Scene(gp, 500, 500);
+		sc = new Scene(gp, 1920, 1080);
+		gp.getStylesheets().add("style/main.css");
 		
 		ps.setScene(sc);
 		ps.setTitle("Init");
