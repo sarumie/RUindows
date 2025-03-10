@@ -1,3 +1,30 @@
 .root {
-  -fx-background-image: url("resources/bg.jpg");
+  -fx-background-image: url("resources/nature.jpg");
+  -fx-alignment: center;
+}
+
+#main {
+  -fx-max-width: 300;
+  -fx-alignment: center;
+  -fx-spacing: 8;
+}
+
+#password {
+  -fx-background-color: transparent;
+  -fx-text-fill: white;
+  -fx-border-color: white;
+  -fx-border-width: 1px;
+  -fx-min-width: 200;
+}
+
+#btnLogin {
+  -fx-background-color: white;
+  -fx-text-fill: black;
+  -fx-border-color: white;
+  -fx-border-width: 1px;
+}
+
+.wrap8 {
+  -fx-alignment: center;
+  -fx-spacing: 8;
 }
