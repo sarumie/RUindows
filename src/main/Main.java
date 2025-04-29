@@ -32,7 +32,8 @@ public class Main extends Application {
 		VBox vb = new VBox();
 		HBox hb = new HBox();
 		ImageView pp = new ImageView();
-		Label welcomeLabel = new Label("Welcome " + System.getProperty("user.name") + " !"), messageLabel = new Label();
+		Label welcomeLabel = new Label("Welcome " + "RU24-4" + " !"),
+				errLabel = new Label("Wrong Password");
 		PasswordField pField = new PasswordField();
 		Button btnLogin  = new Button("Login");
 		
@@ -41,15 +42,29 @@ public class Main extends Application {
 		pField.setId("password");
 		btnLogin.setId("btnLogin");
 		vb.setId("main");
-		hb.getStyleClass().add("wrap8");
+		welcomeLabel.setId("welcome");
+		hb.getStyleClass().add("hbox");
+		errLabel.setVisible(false);
 		
 		hb.getChildren().addAll(pField, btnLogin);
-		vb.getChildren().addAll(pp, welcomeLabel, hb, messageLabel);
+		vb.getChildren().addAll(pp, welcomeLabel, hb, errLabel);
 		root.setCenter(vb);
-		root.getStylesheets().add("style/main.css");
+		root.getStylesheets().add("style/login.css");
+		
+//		validate
+		btnLogin.setOnMouseClicked(e -> {
+			if (pField.getText().trim() != "owo") {
+				errLabel.setVisible(true);
+				return;
+			}
+			
+			Stage currStage = (Stage) root.getScene().getWindow();
+			Stage stage = new Stage();
+			stage.initModality(currStage.getModality());
+			stage.initOwner(currStage);
+		});
 		
 		sc = new Scene(root, 1920, 1080);
-		
 		return sc;
 	}
 	
