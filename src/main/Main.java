@@ -12,6 +12,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import main.view.BrowserView;
+import main.view.HomeView;
+import main.view.LoginView;
 
 public class Main extends Application {	
 
@@ -20,55 +23,11 @@ public class Main extends Application {
 	}
 
 	@Override
-	public void start(Stage ps) throws Exception {	
-		ps.setScene(loginPage());
-		ps.setTitle("Login");
+	public void start(Stage ps) throws Exception {
+//		new BrowserView().show();
+//		ps.setScene(new LoginView().getScene());
+		ps.setScene(new HomeView().getScene());
+		ps.setTitle("Home");
 		ps.show();
-	}
-	
-	public Scene loginPage() {
-		BorderPane root = new BorderPane();
-		Scene sc;
-		VBox vb = new VBox();
-		HBox hb = new HBox();
-		ImageView pp = new ImageView();
-		Label welcomeLabel = new Label("Welcome " + "RU24-4" + " !"),
-				errLabel = new Label("Wrong Password");
-		PasswordField pField = new PasswordField();
-		Button btnLogin  = new Button("Login");
-		
-		pp.setImage(new Image("style/resources/default-profile-pic.png", 200, 200, false, false));
-		
-		pField.setId("password");
-		btnLogin.setId("btnLogin");
-		vb.setId("main");
-		welcomeLabel.setId("welcome");
-		hb.getStyleClass().add("hbox");
-		errLabel.setVisible(false);
-		
-		hb.getChildren().addAll(pField, btnLogin);
-		vb.getChildren().addAll(pp, welcomeLabel, hb, errLabel);
-		root.setCenter(vb);
-		root.getStylesheets().add("style/login.css");
-		
-//		validate
-		btnLogin.setOnMouseClicked(e -> {
-			if (pField.getText().trim() != "owo") {
-				errLabel.setVisible(true);
-				return;
-			}
-			
-			Stage currStage = (Stage) root.getScene().getWindow();
-			Stage stage = new Stage();
-			stage.initModality(currStage.getModality());
-			stage.initOwner(currStage);
-		});
-		
-		sc = new Scene(root, 1920, 1080);
-		return sc;
-	}
-	
-	public void homePage() {
-		
 	}
 }
