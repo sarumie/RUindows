@@ -1,0 +1,8 @@
+.root > * {
+  -fx-fit-to-width: true;
+}
+
+#txtField {
+  -fx-pref-width: 100%;
+  -fx-pref-height: 100%;
+}

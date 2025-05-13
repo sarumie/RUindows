@@ -1,5 +1,5 @@
 .root {
-  -fx-background-image: url("resources/nature.jpg");
+  -fx-background-image: url("resources/pictures/nature.jpg");
   -fx-alignment: center;
 }
 
@@ -27,6 +27,11 @@
 #welcome {
   -fx-text-fill: white;
   -fx-font-size: 24;
+  -fx-font-weight: bold;
+}
+
+#err {
+  -fx-text-fill: red;
   -fx-font-weight: bold;
 }
 

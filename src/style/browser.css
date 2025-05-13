@@ -1,0 +1,71 @@
+.root {
+  -fx-alignment: center;
+}
+
+#header {
+  -fx-alignment: center;
+}
+
+#searchField {
+  -fx-pref-width: 300px;
+}
+
+/* 404 */
+#headerTxt {
+  -fx-alignment: center;
+  -fx-font-size: 64px;
+}
+
+#descTxt {
+  -fx-font-size: 32px;
+  -fx-wrap-text: true;
+}
+
+#containerTxt {
+  -fx-alignment: CENTER_LEFT;
+  -fx-spacing: 32px;
+  -fx-padding: 128px;
+}
+
+#siteNameTxt {
+  -fx-font-size: 32px;
+  -fx-fill: white;
+  -fx-font-weight: bold;
+}
+
+#navbar {
+  -fx-spacing: 16px;
+}
+
+#btnContainer {
+  -fx-alignment: TOP_CENTER;
+}
+
+/* RUtube */
+#mainRUtube {
+  -fx-background-color: rgb(61, 61, 61);
+  -fx-spacing: 12px;
+  -fx-padding: 8px 16px;
+}
+
+/* RUtify */
+#mainRUtify {
+  -fx-background-color: black;
+}
+
+/* stockimages */
+#mainSI {
+  -fx-background-color: black;
+}
+
+#scrollContainerSI {
+  -fx-background-color: black;
+  -fx-fit-to-width: true;
+}
+
+#containerSI {
+  -fx-background-color: black;
+  -fx-alignment: CENTER;
+  -fx-vgap: 48px;
+  -fx-padding: 16px;
+}

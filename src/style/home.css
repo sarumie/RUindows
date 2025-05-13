@@ -1,0 +1,32 @@
+.root {
+  -fx-background-image: url("resources/pictures/bg_home.png");
+  -fx-background-position: center center;
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: cover;
+}
+
+#shortcuts {
+  -fx-spacing: 16px;
+  -fx-padding: 16px;
+}
+
+#taskbar {
+  -fx-background-color: rgb(22, 22, 22);
+  -fx-spacing: 12px;
+  -fx-padding: 8px 16px;
+}
+
+.shortcut {
+  -fx-spacing: 16px;
+  -fx-padding: 8px 16px;
+  -fx-alignment: center;
+}
+
+.shortcut:hover {
+  -fx-background-color: rgb(255, 255, 255, 0.2);
+}
+
+.shortcut > * {
+  -fx-background-color: transparent;
+  -fx-text-fill: white;
+}
