@@ -42,7 +42,7 @@ public class NotepadView {
 		root.getStylesheets().add("style/notepad.css");
 		notepadStage.setScene(new Scene(root, 1280, 720));
 		notepadStage.setTitle("Notepad");
-		notepadStage.getIcons().add(new Image("/style/resources/icons/notepad.png"));
+		notepadStage.getIcons().add(new Image("/style/resources/icons/notepad-icon.png"));
 		notepadStage.show();
 	}
 	

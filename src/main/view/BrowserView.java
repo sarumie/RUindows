@@ -73,7 +73,7 @@ public class BrowserView {
 		root.getStylesheets().add("style/browser.css");
 		stage.setScene(new Scene(root, 1280, 720));
 		stage.setTitle("ChRUme");
-		stage.getIcons().add(new Image("/style/resources/icons/browser.png"));
+		stage.getIcons().add(new Image("/style/resources/icons/chrome.png"));
 		stage.show();
 	}
 	

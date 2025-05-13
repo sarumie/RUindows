@@ -22,7 +22,7 @@ public class LoginView {
 	Button btnLogin  = new Button("Login");
 	
 	public Scene getScene() {
-		pp.setImage(new Image("/style/resources/pictures/default-profile-pic.png", 200, 200, true, false));
+		pp.setImage(new Image("/style/resources/icons/default_profile_pic.png", 200, 200, true, false));
 		
 		pField.setId("password");
 		btnLogin.setId("btnLogin");

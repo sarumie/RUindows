@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -22,18 +23,20 @@ public class HomeView {
 	private Stage stage = new Stage();
 	private FlowPane shortcuts = new FlowPane(Orientation.VERTICAL);
 	private MenuBar taskbar = new MenuBar();
-	private MenuItem shutDown = new MenuItem();
-	private MenuItem logOut = new MenuItem();
-	private ImageView windowsIcon = new ImageView(new Image("/style/resources/icons/windows.png"));
-	private ImageView notepadIcon = new ImageView(new Image("/style/resources/icons/notepad.png"));
+	private ImageView windowsIcon = new ImageView(new Image("/style/resources/icons/window-icon.png"));
+	private ImageView notepadIcon = new ImageView(new Image("/style/resources/icons/notepad-icon.png"));
 	private Menu windows = new Menu();
 	private Menu notepad = new Menu();
 	
+	// Define uniform shortcut size
+	private final int SHORTCUT_SIZE = 120;
+	private final int ICON_SIZE = 80;
+	
 	// Default system applications
 	private final String[][] DEFAULT_APPS = {
-		{"Trash", "/style/resources/icons/recycle_bin_inactive.png"},
-		{"Notepad", "/style/resources/icons/notepad.png"},
-		{"Browser", "/style/resources/icons/browser.png"}
+		{"Trash", "/style/resources/icons/trash-icon.png"},
+		{"Notepad", "/style/resources/icons/notepad-icon.png"},
+		{"Browser", "/style/resources/icons/chrome.png"}
 	};
 	
 	/**
@@ -42,7 +45,13 @@ public class HomeView {
 	 */
 	public Scene getScene() {
 		BorderPane root = new BorderPane();
-		shortcuts.setPrefWrapLength(700);
+		
+		// Make shortcuts container fill the available height
+		shortcuts.setPrefHeight(Double.MAX_VALUE);
+		shortcuts.setVgap(10); // Add some vertical gap between shortcuts
+		
+		// Calculate width to fit 5 vertical shortcuts
+		shortcuts.setPrefWrapLength(SHORTCUT_SIZE + 20); // Width plus some margin
 		shortcuts.setId("shortcuts");
 		
 		// Load default applications
@@ -51,11 +60,16 @@ public class HomeView {
 		// Load files from the files directory
 		loadFilesAsShortcuts();
 		
-		root.setTop(shortcuts);
+		// Change to LEFT instead of TOP to allow the taskbar to be visible at the bottom
+		root.setLeft(shortcuts);
 		
 		// Setup the taskbar
 		setupTaskbar();
 		root.setBottom(taskbar);
+		
+		// Give the taskbar adequate size to be visible
+		taskbar.setPrefHeight(72);
+		taskbar.setMinHeight(72);
 		
 		root.getStylesheets().add("style/home.css");
 		
@@ -74,6 +88,28 @@ public class HomeView {
 		notepadIcon.setPreserveRatio(true);
 		windows.setGraphic(windowsIcon);
 		notepad.setGraphic(notepadIcon);
+		
+		MenuItem shutdownItem = new MenuItem("Shutdown");
+		ImageView shutdownIcon = new ImageView(new Image("/style/resources/icons/shutdown4-icon.png"));
+		shutdownIcon.setFitHeight(24);
+		shutdownIcon.setFitWidth(24);
+		shutdownItem.setGraphic(shutdownIcon);
+		shutdownItem.setOnAction(e -> System.exit(0));
+		
+		MenuItem logoutItem = new MenuItem("Logout");
+		ImageView logoutIcon = new ImageView(new Image("/style/resources/icons/logout3-icon.png"));
+		logoutIcon.setFitHeight(24);
+		logoutIcon.setFitWidth(24);
+		logoutItem.setGraphic(logoutIcon);
+		logoutItem.setOnAction(e -> {
+			Stage currStage = (Stage) taskbar.getScene().getWindow();
+			currStage.setScene(new LoginView().getScene());
+		});
+		
+		windows.getStyleClass().add("menu-top");
+		
+		windows.getItems().addAll(logoutItem, shutdownItem);
+		notepad.setOnAction(e -> new NotepadView(this).show());
 		taskbar.getMenus().addAll(windows, notepad);
 	}
 	
@@ -113,11 +149,27 @@ public class HomeView {
 		VBox shortcut = new VBox();
 		ImageView shortcutImgView = new ImageView(new Image(iconPath));
 		
-		shortcutImgView.setFitWidth(100);
+		shortcutImgView.setFitWidth(ICON_SIZE);
+		shortcutImgView.setFitHeight(ICON_SIZE);
 		shortcutImgView.setPreserveRatio(true);
 		shortcut.getStyleClass().add("shortcut");
 		
-		shortcut.getChildren().addAll(shortcutImgView, new Label(appName));
+		// Make shortcut square with fixed dimensions
+		shortcut.setPrefWidth(SHORTCUT_SIZE);
+		shortcut.setPrefHeight(SHORTCUT_SIZE);
+		shortcut.setMinWidth(SHORTCUT_SIZE);
+		shortcut.setMinHeight(SHORTCUT_SIZE);
+		shortcut.setMaxWidth(SHORTCUT_SIZE);
+		shortcut.setMaxHeight(SHORTCUT_SIZE);
+		
+		// Center content
+		shortcut.setAlignment(Pos.CENTER);
+		
+		Label nameLabel = new Label(appName);
+		nameLabel.setWrapText(true);
+		nameLabel.setAlignment(Pos.CENTER);
+		
+		shortcut.getChildren().addAll(shortcutImgView, nameLabel);
 		
 		shortcut.setOnMouseClicked(e -> {
 			if (e.getClickCount() == 2) {
@@ -152,37 +204,53 @@ public class HomeView {
 	 * @return VBox containing the shortcut or null if file type is not supported
 	 */
 	private VBox createFileShortcut(File file) {
-    Image img;
-    
-    if (Utils.isImageFile(file)) {
-        img = new Image(file.toURI().toString());
-    } else if (Utils.isTextFile(file)) {
-        img = new Image("/style/resources/icons/notepad.png");
-    } else {
-        return null; // Skip unsupported file types
-    }
-    
-    VBox shortcut = new VBox();
-    ImageView shortcutImgView = new ImageView(img);
-    
-    shortcutImgView.setFitWidth(100);
-    shortcutImgView.setPreserveRatio(true);
-    shortcut.getStyleClass().add("shortcut");
-    
-    shortcut.getChildren().addAll(shortcutImgView, new Label(file.getName()));
-    
-    shortcut.setOnMouseClicked(e -> {
-        if (e.getClickCount() == 2) {
-            if (Utils.isTextFile(file)) {
-                new NotepadView(this).show(file);
-            } else if (Utils.isImageFile(file)) {
-                new ImageViewer(this).show(file);
-            }
-        }
-    });
-    
-    return shortcut;
-}
+		Image img;
+		
+		if (Utils.isImageFile(file)) {
+			img = new Image(file.toURI().toString());
+		} else if (Utils.isTextFile(file)) {
+			img = new Image("/style/resources/icons/notepad-icon.png");
+		} else {
+			return null; // Skip unsupported file types
+		}
+		
+		VBox shortcut = new VBox();
+		ImageView shortcutImgView = new ImageView(img);
+		
+		shortcutImgView.setFitWidth(ICON_SIZE);
+		shortcutImgView.setFitHeight(ICON_SIZE);
+		shortcutImgView.setPreserveRatio(true);
+		shortcut.getStyleClass().add("shortcut");
+		
+		// Make shortcut square with fixed dimensions
+		shortcut.setPrefWidth(SHORTCUT_SIZE);
+		shortcut.setPrefHeight(SHORTCUT_SIZE);
+		shortcut.setMinWidth(SHORTCUT_SIZE);
+		shortcut.setMinHeight(SHORTCUT_SIZE);
+		shortcut.setMaxWidth(SHORTCUT_SIZE);
+		shortcut.setMaxHeight(SHORTCUT_SIZE);
+		
+		// Center content
+		shortcut.setAlignment(Pos.CENTER);
+		
+		Label nameLabel = new Label(file.getName());
+		nameLabel.setWrapText(true);
+		nameLabel.setAlignment(Pos.CENTER);
+		
+		shortcut.getChildren().addAll(shortcutImgView, nameLabel);
+		
+		shortcut.setOnMouseClicked(e -> {
+			if (e.getClickCount() == 2) {
+				if (Utils.isTextFile(file)) {
+					new NotepadView(this).show(file);
+				} else if (Utils.isImageFile(file)) {
+					new ImageViewer(this).show(file);
+				}
+			}
+		});
+		
+		return shortcut;
+	}
 	
 	/**
 	 * Adds a new application shortcut to the desktop

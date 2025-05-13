@@ -1,5 +1,5 @@
 .root {
-  -fx-background-image: url("resources/pictures/bg_home.png");
+  -fx-background-image: url("resources/pictures/homepage.jpg");
   -fx-background-position: center center;
   -fx-background-repeat: no-repeat;
   -fx-background-size: cover;
@@ -29,4 +29,8 @@
 .shortcut > * {
   -fx-background-color: transparent;
   -fx-text-fill: white;
+}
+
+.menu-top {
+  -fx-translate-y: -100%;
 }
