@@ -4,6 +4,7 @@ import java.io.File;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
@@ -12,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -21,7 +23,7 @@ public class ImageViewer {
     private File imageFile;
     private ImageView imageView;
     private double rotation = 0;
-    private double zoomFactor = 1.0;
+    private double zoomFactor = 0.1;
     private Image originalImage;
     private double dragStartX, dragStartY;
     private double translateX, translateY;
@@ -61,9 +63,39 @@ public class ImageViewer {
     private Scene createScene() {
         BorderPane root = new BorderPane();
 
-        // Create the menu bar
-        MenuBar menuBar = createMenuBar();
-        root.setTop(menuBar);
+        // Create the menu bar and button
+        HBox menuBarContainer = new HBox();
+
+        // Create Zoom menu with slider
+        MenuBar menuBar = new MenuBar();
+        Menu zoomMenu = new Menu("Zoom");
+
+        Slider zoomSlider = new Slider(0.1, 5.0, 0.0);
+        zoomSlider.setPrefWidth(200);
+
+        zoomSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            zoomFactor = newVal.doubleValue();
+            updateImageView();
+        });
+
+        zoomMenu.setGraphic(zoomSlider);
+        menuBar.getMenus().add(zoomMenu);
+
+        // Create rotate button that looks like menu
+        Button rotateButton = new Button("Rotate");
+        rotateButton.setOnAction(e -> rotate());
+        rotateButton.setStyle("-fx-background-color: transparent; -fx-padding: 5 10; -fx-font-size: 12;");
+        rotateButton.setFocusTraversable(false);
+        
+        // Add hover effect with specified color
+        rotateButton.setOnMouseEntered(e -> rotateButton.setStyle("-fx-background-color: #0096C9; -fx-padding: 5 10; -fx-font-size: 12; -fx-text-fill: white;"));
+        rotateButton.setOnMouseExited(e -> rotateButton.setStyle("-fx-background-color: transparent; -fx-padding: 5 10; -fx-font-size: 12;"));
+
+        // Add both to container
+        menuBarContainer.getChildren().addAll(menuBar, rotateButton);
+        menuBarContainer.setAlignment(Pos.CENTER_LEFT);
+
+        root.setTop(menuBarContainer);
 
         // Load the image
         originalImage = new Image(imageFile.toURI().toString());
@@ -84,46 +116,10 @@ public class ImageViewer {
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
         root.setCenter(scrollPane);
-
-        // Apply styling
-//        root.getStylesheets().add("style/imageviewer.css");
+        
+        updateImageView();
 
         return new Scene(root);
-    }
-
-    /**
-     * Creates the menu bar for the ImageViewer
-     * @return The menu bar
-     */
-    private MenuBar createMenuBar() {
-        MenuBar menuBar = new MenuBar();
-
-        // Create Zoom menu with slider directly in it
-        Menu zoomMenu = new Menu("Zoom");
-
-        // Create custom content for the Zoom menu
-        Slider zoomSlider = new Slider(0.1, 5.0, 1.0);
-        zoomSlider.setPrefWidth(200);
-        // zoomSlider.setShowTickLabels(true);
-        // zoomSlider.setMajorTickUnit(1.0);
-
-        // Update image when slider value changes
-        zoomSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
-            zoomFactor = newVal.doubleValue();
-            updateImageView();
-        });
-
-        // Set the zoom slider as the content of the Zoom menu
-        zoomMenu.setGraphic(zoomSlider);
-
-        // Create Rotate menu with direct click action
-        Menu rotateMenu = new Menu("Rotate");
-        rotateMenu.setOnAction(e -> rotate());
-
-        // Add menus to menu bar
-        menuBar.getMenus().addAll(zoomMenu, rotateMenu);
-
-        return menuBar;
     }
 
     /**
