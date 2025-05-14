@@ -2,15 +2,12 @@ package main.view;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.List;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -31,8 +28,8 @@ public class HomeView {
 	private Menu notepad = new Menu();
 	
 	// Define uniform shortcut size
-	private final int SHORTCUT_SIZE = 120;
-	private final int ICON_SIZE = 80;
+	private final int ICON_SIZE = 104;
+	private final int SHORTCUT_SIZE = 40 + ICON_SIZE;
 	
 	// Default system applications
 	private final String[][] DEFAULT_APPS = {
@@ -210,6 +207,8 @@ public class HomeView {
 		File[] files = new File(getClass().getResource("/files").getFile()).listFiles();
 		
 		if (files != null) {
+			Arrays.sort(files, (f1, f2) -> Long.compare(f1.lastModified(), f2.lastModified()));
+			
 			for (File file : files) {
 				VBox shortcut = createFileShortcut(file);
 				if (shortcut != null) {

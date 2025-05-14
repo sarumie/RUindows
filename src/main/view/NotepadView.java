@@ -87,18 +87,20 @@ public class NotepadView {
 		TextInputDialog saveFileDialog = new TextInputDialog("text" + (nextNumber == 0 ? "" : nextNumber) + ".txt");
 		saveFileDialog.setTitle("Save file");
 		saveFileDialog.setHeaderText("Save file");
-		saveFileDialog.setContentText("Name file:");
+		saveFileDialog.setContentText("Rename file:");
 		Optional<String> result = saveFileDialog.showAndWait();
 		result.ifPresent(fileName -> {
 			// Check if filename is alphanumeric and has .txt extension
 			if (!fileName.matches("^[a-zA-Z0-9]+\\.txt$")) {
-				Utils.showAlert("Invalid file name", "File name is not alphanumeric");
+				Utils.showAlert("File name is invalid", "File name is not alphanumeric!");
+				saveFile();
+				return;
 			}
 
 			// Check if file already exists
 			File file = new File(saveDirectory +  fileName);
 			if (file.exists()) {
-				Utils.showAlert("File Exists", "A file with this name already exists. Please choose another name.");
+				Utils.showAlert("File with that name is aready exists!", "A file with that name has already been made");
 				saveFile();
 				return;
 			}
@@ -108,6 +110,8 @@ public class NotepadView {
 				homeView.addFileShortcut(file);
 			} catch (IOException e) {
 				Utils.showAlert("Error saving file", e.getMessage());
+				saveFile();
+				return;
 			}
 		});
 	}

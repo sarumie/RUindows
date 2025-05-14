@@ -200,14 +200,14 @@ public class BrowserView {
 				File outputFile = new File(getClass().getResource("/files").getPath() + fileName);
 				// check if the filename alphanumeric and ends with .jpg
 				if (!fileName.matches("[a-zA-Z0-9]+\\.jpg$")) {
-					new Alert(Alert.AlertType.ERROR, "Filename must be alphanumeric and end with .jpg").showAndWait();
+					Utils.showAlert("File name is invalid", "File name is not alphanumeric!");
 					saveFile(imageData, image);
 					return;
 				}
 				
 				// Check if file already exists
 				if (outputFile.exists()) {
-					new Alert(Alert.AlertType.ERROR, "File already exists. Please choose another name.").showAndWait();
+					Utils.showAlert("File with that name is aready exists!", "A file with that name has already been made");
 					saveFile(imageData, image);
 					return;
 				}

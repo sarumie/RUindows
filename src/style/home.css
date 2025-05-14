@@ -28,7 +28,7 @@
 
 .shortcut > * {
   -fx-background-color: transparent;
-  -fx-text-fill: white;
+  -fx-text-fill: rgb(26, 26, 26);
 }
 
 .menu-top {
