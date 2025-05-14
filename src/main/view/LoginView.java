@@ -17,7 +17,7 @@ public class LoginView {
 	HBox hb = new HBox();
 	ImageView pp = new ImageView();
 	Label welcomeLabel = new Label("Welcome " + "RU24-4" + " !"),
-			errLabel = new Label("Wrong Password");
+			errLabel = new Label("Wrong password!");
 	PasswordField pField = new PasswordField();
 	Button btnLogin  = new Button("Login");
 	
@@ -37,7 +37,7 @@ public class LoginView {
 		root.setCenter(vb);
 		root.getStylesheets().add("style/login.css");
 		
-//		validate
+		// Validate
 		btnLogin.setOnMouseClicked(e -> {
 			if (!pField.getText().trim().equals("owo")) {
 				errLabel.setVisible(true);

@@ -1,10 +1,6 @@
 package main.view;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
@@ -80,8 +76,8 @@ public class BrowserView {
 	public void showContent(String url) {
 		Utils.deepClearChildren(main);
 		main.setId("");
-//		if (url.equals("RUtube.net")) {
-		if (url.equals("r")) {
+		if (url.equals("RUtube.net")) {
+		// if (url.equals("r")) {
 			main.setId("mainRUtube");
 			
 			FlowPane navbar = new FlowPane();
@@ -110,8 +106,8 @@ public class BrowserView {
 	        main.setCenter(videoPlayerContainer);
 	        return;
 		}
-//		if (url.equals("RUtify.net")) {
-		if (url.equals("u")) {
+		if (url.equals("RUtify.net")) {
+		// if (url.equals("u")) {
 			main.setId("mainRUtify");
 			
 			FlowPane navbar = new FlowPane();
@@ -126,6 +122,7 @@ public class BrowserView {
 			icon.setFitWidth(32);
 			icon.setPreserveRatio(true);
 			navbar.setHgap(16);
+			navbar.paddingProperty().setValue(new javafx.geometry.Insets(16));
 			playerSlider.setPrefWidth(400);
 			audioPlayerContainer.setAlignment(Pos.CENTER);
 			btnContainer.setAlignment(Pos.TOP_CENTER);
@@ -145,8 +142,8 @@ public class BrowserView {
 			main.setCenter(audioPlayerContainer);
 			return;
 		}
-//		if (url.equals("stockimages.net")) {
-		if (url.equals("s")) {
+		if (url.equals("stockimages.net")) {
+		// if (url.equals("s")) {
 			main.setId("mainSI");
 			
 			ScrollPane scrollContainer = new ScrollPane();

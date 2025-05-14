@@ -35,6 +35,7 @@
 
 #navbar {
   -fx-spacing: 16px;
+  -fx-padding: 16px;
 }
 
 #btnContainer {

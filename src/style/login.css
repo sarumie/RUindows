@@ -1,6 +1,9 @@
 .root {
   -fx-background-image: url("resources/pictures/nature.jpg");
   -fx-alignment: center;
+  -fx-background-position: center center;
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: cover;
 }
 
 #main {

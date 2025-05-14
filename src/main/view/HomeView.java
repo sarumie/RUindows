@@ -13,16 +13,18 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import main.Utils;
 
 public class HomeView {
 	private Stage stage = new Stage();
 	private FlowPane shortcuts = new FlowPane(Orientation.VERTICAL);
-	private MenuBar taskbar = new MenuBar();
+	private FlowPane taskbarPane = new FlowPane();
 	private ImageView windowsIcon = new ImageView(new Image("/style/resources/icons/window-icon.png"));
 	private ImageView notepadIcon = new ImageView(new Image("/style/resources/icons/notepad-icon.png"));
 	private Menu windows = new Menu();
@@ -65,11 +67,11 @@ public class HomeView {
 		
 		// Setup the taskbar
 		setupTaskbar();
-		root.setBottom(taskbar);
+		root.setBottom(taskbarPane);
 		
 		// Give the taskbar adequate size to be visible
-		taskbar.setPrefHeight(72);
-		taskbar.setMinHeight(72);
+		taskbarPane.setPrefHeight(72);
+		taskbarPane.setMinHeight(72);
 		
 		root.getStylesheets().add("style/home.css");
 		
@@ -80,37 +82,115 @@ public class HomeView {
 	 * Sets up the taskbar with icons and menus
 	 */
 	private void setupTaskbar() {
-		taskbar.setId("taskbar");
+		// Create a FlowPane as the taskbar container
+		taskbarPane.setId("taskbar");
+		taskbarPane.setAlignment(Pos.CENTER_LEFT);
+		taskbarPane.setHgap(10);
+		taskbarPane.setPadding(new javafx.geometry.Insets(10, 20, 10, 20));
+
+		// Set up the Windows button
 		int iconSize = 48;
 		windowsIcon.setFitWidth(iconSize);
 		windowsIcon.setPreserveRatio(true);
+		
+		javafx.scene.control.Button windowsButton = new javafx.scene.control.Button();
+		windowsButton.setGraphic(windowsIcon);
+		windowsButton.setStyle("-fx-background-color: transparent; -fx-padding: 5;");
+		
+		// Apply hover effect
+		windowsButton.setOnMouseEntered(e -> windowsButton.setStyle("-fx-background-color: #0096C9; -fx-padding: 5;"));
+		windowsButton.setOnMouseExited(e -> windowsButton.setStyle("-fx-background-color: transparent; -fx-padding: 5;"));
+		
+		// Set up the Notepad button
 		notepadIcon.setFitWidth(iconSize);
 		notepadIcon.setPreserveRatio(true);
-		windows.setGraphic(windowsIcon);
-		notepad.setGraphic(notepadIcon);
 		
-		MenuItem shutdownItem = new MenuItem("Shutdown");
-		ImageView shutdownIcon = new ImageView(new Image("/style/resources/icons/shutdown4-icon.png"));
-		shutdownIcon.setFitHeight(24);
-		shutdownIcon.setFitWidth(24);
-		shutdownItem.setGraphic(shutdownIcon);
-		shutdownItem.setOnAction(e -> System.exit(0));
+		javafx.scene.control.Button notepadButton = new javafx.scene.control.Button();
+		notepadButton.setGraphic(notepadIcon);
+		notepadButton.setStyle("-fx-background-color: transparent; -fx-padding: 5;");
 		
-		MenuItem logoutItem = new MenuItem("Logout");
+		// Apply hover effect
+		notepadButton.setOnMouseEntered(e -> notepadButton.setStyle("-fx-background-color: #0096C9; -fx-padding: 5;"));
+		notepadButton.setOnMouseExited(e -> notepadButton.setStyle("-fx-background-color: transparent; -fx-padding: 5;"));
+		
+		// Create popup menu for Windows button
+		VBox windowsMenu = new VBox();
+		windowsMenu.getStyleClass().add("taskbar-popup-menu");
+		windowsMenu.setStyle("-fx-background-color: black;");
+		
+		// Logout option - convert to button with hover effect
+		javafx.scene.control.Button logoutItem = new javafx.scene.control.Button("Logout");
+		logoutItem.setTextFill(javafx.scene.paint.Color.WHITE);
 		ImageView logoutIcon = new ImageView(new Image("/style/resources/icons/logout3-icon.png"));
 		logoutIcon.setFitHeight(24);
 		logoutIcon.setFitWidth(24);
 		logoutItem.setGraphic(logoutIcon);
+		logoutItem.setPadding(new javafx.geometry.Insets(10));
+		logoutItem.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+		
+		// Apply hover effect
+		logoutItem.setOnMouseEntered(e -> logoutItem.setStyle("-fx-background-color: #0096C9; -fx-text-fill: white;"));
+		logoutItem.setOnMouseExited(e -> logoutItem.setStyle("-fx-background-color: transparent; -fx-text-fill: white;"));
+		
+		// Shutdown option - convert to button with hover effect
+		javafx.scene.control.Button shutdownItem = new javafx.scene.control.Button("Shutdown");
+		shutdownItem.setTextFill(javafx.scene.paint.Color.WHITE);
+		ImageView shutdownIcon = new ImageView(new Image("/style/resources/icons/shutdown4-icon.png"));
+		shutdownIcon.setFitHeight(24);
+		shutdownIcon.setFitWidth(24);
+		shutdownItem.setGraphic(shutdownIcon);
+		shutdownItem.setPadding(new javafx.geometry.Insets(10));
+		shutdownItem.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+		
+		// Apply hover effect
+		shutdownItem.setOnMouseEntered(e -> shutdownItem.setStyle("-fx-background-color: #0096C9; -fx-text-fill: white;"));
+		shutdownItem.setOnMouseExited(e -> shutdownItem.setStyle("-fx-background-color: transparent; -fx-text-fill: white;"));
+		
+		windowsMenu.getChildren().addAll(logoutItem, shutdownItem);
+		
+		// Set up popup behavior
+		Popup popup = new javafx.stage.Popup();
+		popup.getContent().add(windowsMenu);
+		
+		 // Track popup state
+		boolean[] isPopupShowing = {false};
+		
+		// Add event handlers for toggling the popup
+		windowsButton.setOnAction(e -> {
+			if (isPopupShowing[0]) {
+				popup.hide();
+				isPopupShowing[0] = false;
+			} else {
+				popup.show(windowsButton, 
+				windowsButton.localToScreen(0, 0).getX(), 
+				windowsButton.localToScreen(0, 0).getY() - windowsMenu.prefHeight(-1));
+				isPopupShowing[0] = true;
+			}
+		});
+		
+		// Add global event filter to close popup when clicking outside
+		stage.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
+			if (isPopupShowing[0] && !windowsButton.getBoundsInParent().contains(windowsButton.sceneToLocal(e.getSceneX(), e.getSceneY()))
+					&& !windowsMenu.getBoundsInParent().contains(windowsMenu.sceneToLocal(e.getSceneX(), e.getSceneY()))) {
+				popup.hide();
+				isPopupShowing[0] = false;
+			}
+		});
+		
+		// Update logoutItem and shutdownItem actions to update popup state
 		logoutItem.setOnAction(e -> {
-			Stage currStage = (Stage) taskbar.getScene().getWindow();
+			popup.hide();
+			isPopupShowing[0] = false;
+			Stage currStage = (Stage) taskbarPane.getScene().getWindow();
 			currStage.setScene(new LoginView().getScene());
 		});
 		
-		windows.getStyleClass().add("menu-top");
+		shutdownItem.setOnAction(e -> System.exit(0));
 		
-		windows.getItems().addAll(logoutItem, shutdownItem);
-		notepad.setOnAction(e -> new NotepadView(this).show());
-		taskbar.getMenus().addAll(windows, notepad);
+		notepadButton.setOnAction(e -> new NotepadView(this).show());
+		
+		// Add buttons to taskbar
+		taskbarPane.getChildren().addAll(windowsButton, notepadButton);
 	}
 	
 	/**
