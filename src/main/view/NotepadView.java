@@ -20,6 +20,7 @@ import main.Utils;
 
 public class NotepadView {
 	HomeView homeView;
+	File txtFile;
 	Stage notepadStage = new Stage();
 	BorderPane root = new BorderPane();
 	Menu fileMenu = new Menu("File");
@@ -27,43 +28,57 @@ public class NotepadView {
 	MenuBar navbar = new MenuBar(fileMenu);
 	TextArea txtArea = new TextArea();
 
-	public NotepadView(HomeView homeView) {
+	public NotepadView(HomeView homeView, File txtFile) {
 		this.homeView = homeView;
-		
+		this.txtFile = txtFile;
 	}
-	
+
+	public NotepadView(HomeView homeView) {
+		this(homeView, null);
+	}
+
 	public void show() {
 		fileMenu.getItems().add(saveFileMenu);
-		
 		saveFileMenu.setOnAction(e -> saveFile());
 		
 		root.setTop(navbar);
 		root.setCenter(txtArea);
 		root.getStylesheets().add("style/notepad.css");
+		
+		if (txtFile != null) {
+			try {
+				java.util.Scanner scanner = new java.util.Scanner(txtFile);
+				StringBuilder content = new StringBuilder();
+				while (scanner.hasNextLine()) {
+					content.append(scanner.nextLine()).append("\n");
+				}
+				scanner.close();
+				txtArea.setText(content.toString());
+				notepadStage.setTitle("Notepad - " + txtFile.getName());
+			} catch (IOException e) {
+				Utils.showAlert("Error opening file", "Could not open the file: " + e.getMessage());
+			}
+		} else {
+			notepadStage.setTitle("Notepad");
+		}
+		
 		notepadStage.setScene(new Scene(root, 1280, 720));
-		notepadStage.setTitle("Notepad");
 		notepadStage.getIcons().add(new Image("/style/resources/icons/notepad-icon.png"));
 		notepadStage.show();
 	}
 	
-	public void show(File file) {
-		try {
-			java.util.Scanner scanner = new java.util.Scanner(file);
-			StringBuilder content = new StringBuilder();
-			while (scanner.hasNextLine()) {
-				content.append(scanner.nextLine()).append("\n");
-			}
-			scanner.close();
-			txtArea.setText(content.toString());
-			notepadStage.setTitle("Notepad - " + file.getName());
-			show();
-		} catch (IOException e) {
-			Utils.showAlert("Error opening file", "Could not open the file: " + e.getMessage());
-			// show();
-		}
-	}
-	
 	public void saveFile() {
+		// If editing an existing file, update that file
+		if (txtFile != null) {
+			try (PrintWriter writer = new PrintWriter(new FileWriter(txtFile), false)) {
+				writer.print(txtArea.getText());
+			} catch (IOException e) {
+				Utils.showAlert("Error saving file", e.getMessage());
+			}
+			return;
+		}
+		
+		// Create new file if txtFile is null
 		String saveDirectory = getClass().getResource("/files").getPath();
 		
 		File directory = new File(saveDirectory);
