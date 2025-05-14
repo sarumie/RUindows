@@ -107,7 +107,6 @@ public class BrowserView {
 	        return;
 		}
 		if (url.equals("RUtify.net")) {
-		// if (url.equals("u")) {
 			main.setId("mainRUtify");
 			
 			FlowPane navbar = new FlowPane();
@@ -143,7 +142,6 @@ public class BrowserView {
 			return;
 		}
 		if (url.equals("stockimages.net")) {
-		// if (url.equals("s")) {
 			main.setId("mainSI");
 			
 			ScrollPane scrollContainer = new ScrollPane();
@@ -189,23 +187,19 @@ public class BrowserView {
 	
 	public void saveFile(String[] imageData, Image image) {
 		try {
-			// Create a TextInputDialog for filename input
 			TextInputDialog dialog = new TextInputDialog(imageData[0]);
 			dialog.setTitle("Save Image");
 			dialog.setHeaderText("Save Image");
 			dialog.setContentText("Rename file:");
 			
-			// Show dialog and process result
 			dialog.showAndWait().ifPresent(fileName -> {
 				File outputFile = new File(getClass().getResource("/files").getPath() + fileName);
-				// check if the filename alphanumeric and ends with .jpg
 				if (!fileName.matches("[a-zA-Z0-9]+\\.jpg$")) {
 					Utils.showAlert("File name is invalid", "File name is not alphanumeric!");
 					saveFile(imageData, image);
 					return;
 				}
 				
-				// Check if file already exists
 				if (outputFile.exists()) {
 					Utils.showAlert("File with that name is aready exists!", "A file with that name has already been made");
 					saveFile(imageData, image);
@@ -213,10 +207,8 @@ public class BrowserView {
 				}
 
 				try {
-					// Save the image to the file
 					ImageIO.write(SwingFXUtils.fromFXImage(image, null), "jpg", outputFile);
 					
-					// Let the user know the download was successful
 					System.out.println("Downloaded: " + fileName);
 					homeView.addFileShortcut(outputFile);
 				} catch (Exception ex) {

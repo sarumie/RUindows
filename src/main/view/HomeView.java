@@ -27,11 +27,9 @@ public class HomeView {
 	private Menu windows = new Menu();
 	private Menu notepad = new Menu();
 	
-	// Define uniform shortcut size
 	private final int ICON_SIZE = 104;
 	private final int SHORTCUT_SIZE = 40 + ICON_SIZE;
 	
-	// Default system applications
 	private final String[][] DEFAULT_APPS = {
 		{"Trash", "/style/resources/icons/trash-icon.png"},
 		{"Notepad", "/style/resources/icons/notepad-icon.png"},
@@ -45,28 +43,18 @@ public class HomeView {
 	public Scene getScene() {
 		BorderPane root = new BorderPane();
 		
-		// Make shortcuts container fill the available height
 		shortcuts.setPrefHeight(Double.MAX_VALUE);
-		shortcuts.setVgap(10); // Add some vertical gap between shortcuts
+		shortcuts.setVgap(10); 
 		
-		// Calculate width to fit 5 vertical shortcuts
-		shortcuts.setPrefWrapLength(SHORTCUT_SIZE + 20); // Width plus some margin
+		shortcuts.setPrefWrapLength(SHORTCUT_SIZE + 20); 
 		shortcuts.setId("shortcuts");
 		
-		// Load default applications
 		loadDefaultApps();
-		
-		// Load files from the files directory
 		loadFilesAsShortcuts();
-		
-		// Change to LEFT instead of TOP to allow the taskbar to be visible at the bottom
 		root.setLeft(shortcuts);
-		
-		// Setup the taskbar
 		setupTaskbar();
+
 		root.setBottom(taskbarPane);
-		
-		// Give the taskbar adequate size to be visible
 		taskbarPane.setPrefHeight(72);
 		taskbarPane.setMinHeight(72);
 		
@@ -79,13 +67,12 @@ public class HomeView {
 	 * Sets up the taskbar with icons and menus
 	 */
 	private void setupTaskbar() {
-		// Create a FlowPane as the taskbar container
+		
 		taskbarPane.setId("taskbar");
 		taskbarPane.setAlignment(Pos.CENTER_LEFT);
 		taskbarPane.setHgap(10);
 		taskbarPane.setPadding(new javafx.geometry.Insets(10, 20, 10, 20));
 
-		// Set up the Windows button
 		int iconSize = 48;
 		windowsIcon.setFitWidth(iconSize);
 		windowsIcon.setPreserveRatio(true);
@@ -94,11 +81,9 @@ public class HomeView {
 		windowsButton.setGraphic(windowsIcon);
 		windowsButton.setStyle("-fx-background-color: transparent; -fx-padding: 5;");
 		
-		// Apply hover effect
 		windowsButton.setOnMouseEntered(e -> windowsButton.setStyle("-fx-background-color: #0096C9; -fx-padding: 5;"));
 		windowsButton.setOnMouseExited(e -> windowsButton.setStyle("-fx-background-color: transparent; -fx-padding: 5;"));
 		
-		// Set up the Notepad button
 		notepadIcon.setFitWidth(iconSize);
 		notepadIcon.setPreserveRatio(true);
 		
@@ -106,16 +91,12 @@ public class HomeView {
 		notepadButton.setGraphic(notepadIcon);
 		notepadButton.setStyle("-fx-background-color: transparent; -fx-padding: 5;");
 		
-		// Apply hover effect
 		notepadButton.setOnMouseEntered(e -> notepadButton.setStyle("-fx-background-color: #0096C9; -fx-padding: 5;"));
-		notepadButton.setOnMouseExited(e -> notepadButton.setStyle("-fx-background-color: transparent; -fx-padding: 5;"));
-		
-		// Create popup menu for Windows button
+
 		VBox windowsMenu = new VBox();
 		windowsMenu.getStyleClass().add("taskbar-popup-menu");
 		windowsMenu.setStyle("-fx-background-color: black;");
 		
-		// Logout option - convert to button with hover effect
 		javafx.scene.control.Button logoutItem = new javafx.scene.control.Button("Logout");
 		logoutItem.setTextFill(javafx.scene.paint.Color.WHITE);
 		ImageView logoutIcon = new ImageView(new Image("/style/resources/icons/logout3-icon.png"));
@@ -125,11 +106,9 @@ public class HomeView {
 		logoutItem.setPadding(new javafx.geometry.Insets(10));
 		logoutItem.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
 		
-		// Apply hover effect
 		logoutItem.setOnMouseEntered(e -> logoutItem.setStyle("-fx-background-color: #0096C9; -fx-text-fill: white;"));
 		logoutItem.setOnMouseExited(e -> logoutItem.setStyle("-fx-background-color: transparent; -fx-text-fill: white;"));
 		
-		// Shutdown option - convert to button with hover effect
 		javafx.scene.control.Button shutdownItem = new javafx.scene.control.Button("Shutdown");
 		shutdownItem.setTextFill(javafx.scene.paint.Color.WHITE);
 		ImageView shutdownIcon = new ImageView(new Image("/style/resources/icons/shutdown4-icon.png"));
@@ -139,20 +118,16 @@ public class HomeView {
 		shutdownItem.setPadding(new javafx.geometry.Insets(10));
 		shutdownItem.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
 		
-		// Apply hover effect
 		shutdownItem.setOnMouseEntered(e -> shutdownItem.setStyle("-fx-background-color: #0096C9; -fx-text-fill: white;"));
 		shutdownItem.setOnMouseExited(e -> shutdownItem.setStyle("-fx-background-color: transparent; -fx-text-fill: white;"));
 		
 		windowsMenu.getChildren().addAll(logoutItem, shutdownItem);
 		
-		// Set up popup behavior
 		Popup popup = new javafx.stage.Popup();
 		popup.getContent().add(windowsMenu);
-		
-		 // Track popup state
+		 
 		boolean[] isPopupShowing = {false};
-		
-		// Add event handlers for toggling the popup
+
 		windowsButton.setOnAction(e -> {
 			if (isPopupShowing[0]) {
 				popup.hide();
@@ -165,7 +140,6 @@ public class HomeView {
 			}
 		});
 		
-		// Add global event filter to close popup when clicking outside
 		stage.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
 			if (isPopupShowing[0] && !windowsButton.getBoundsInParent().contains(windowsButton.sceneToLocal(e.getSceneX(), e.getSceneY()))
 					&& !windowsMenu.getBoundsInParent().contains(windowsMenu.sceneToLocal(e.getSceneX(), e.getSceneY()))) {
@@ -174,7 +148,6 @@ public class HomeView {
 			}
 		});
 		
-		// Update logoutItem and shutdownItem actions to update popup state
 		logoutItem.setOnAction(e -> {
 			popup.hide();
 			isPopupShowing[0] = false;
@@ -183,10 +156,8 @@ public class HomeView {
 		});
 		
 		shutdownItem.setOnAction(e -> System.exit(0));
-		
 		notepadButton.setOnAction(e -> new NotepadView(this).show());
 		
-		// Add buttons to taskbar
 		taskbarPane.getChildren().addAll(windowsButton, notepadButton);
 	}
 	
@@ -233,15 +204,12 @@ public class HomeView {
 		shortcutImgView.setPreserveRatio(true);
 		shortcut.getStyleClass().add("shortcut");
 		
-		// Make shortcut square with fixed dimensions
 		shortcut.setPrefWidth(SHORTCUT_SIZE);
 		shortcut.setPrefHeight(SHORTCUT_SIZE);
 		shortcut.setMinWidth(SHORTCUT_SIZE);
 		shortcut.setMinHeight(SHORTCUT_SIZE);
 		shortcut.setMaxWidth(SHORTCUT_SIZE);
 		shortcut.setMaxHeight(SHORTCUT_SIZE);
-		
-		// Center content
 		shortcut.setAlignment(Pos.CENTER);
 		
 		Label nameLabel = new Label(appName);
@@ -290,7 +258,7 @@ public class HomeView {
 		} else if (Utils.isTextFile(file)) {
 			img = new Image("/style/resources/icons/notepad-icon.png");
 		} else {
-			return null; // Skip unsupported file types
+			return null;
 		}
 		
 		VBox shortcut = new VBox();
@@ -301,15 +269,12 @@ public class HomeView {
 		shortcutImgView.setPreserveRatio(true);
 		shortcut.getStyleClass().add("shortcut");
 		
-		// Make shortcut square with fixed dimensions
 		shortcut.setPrefWidth(SHORTCUT_SIZE);
 		shortcut.setPrefHeight(SHORTCUT_SIZE);
 		shortcut.setMinWidth(SHORTCUT_SIZE);
 		shortcut.setMinHeight(SHORTCUT_SIZE);
 		shortcut.setMaxWidth(SHORTCUT_SIZE);
 		shortcut.setMaxHeight(SHORTCUT_SIZE);
-		
-		// Center content
 		shortcut.setAlignment(Pos.CENTER);
 		
 		Label nameLabel = new Label(file.getName());

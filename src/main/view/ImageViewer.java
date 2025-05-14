@@ -62,10 +62,8 @@ public class ImageViewer {
     private Scene createScene() {
         BorderPane root = new BorderPane();
 
-        // Create the menu bar and button
         HBox menuBarContainer = new HBox();
 
-        // Create Zoom menu with slider
         MenuBar menuBar = new MenuBar();
         Menu zoomMenu = new Menu("Zoom");
 
@@ -80,35 +78,28 @@ public class ImageViewer {
         zoomMenu.setGraphic(zoomSlider);
         menuBar.getMenus().add(zoomMenu);
 
-        // Create rotate button that looks like menu
         Button rotateButton = new Button("Rotate");
         rotateButton.setOnAction(e -> rotate());
         rotateButton.setStyle("-fx-background-color: transparent; -fx-padding: 5 10; -fx-font-size: 12;");
         rotateButton.setFocusTraversable(false);
         
-        // Add hover effect with specified color
         rotateButton.setOnMouseEntered(e -> rotateButton.setStyle("-fx-background-color: #0096C9; -fx-padding: 5 10; -fx-font-size: 12; -fx-text-fill: white;"));
         rotateButton.setOnMouseExited(e -> rotateButton.setStyle("-fx-background-color: transparent; -fx-padding: 5 10; -fx-font-size: 12;"));
 
-        // Add both to container
         menuBarContainer.getChildren().addAll(menuBar, rotateButton);
         menuBarContainer.setAlignment(Pos.CENTER_LEFT);
 
         root.setTop(menuBarContainer);
 
-        // Load the image
         originalImage = new Image(imageFile.toURI().toString());
         imageView = new ImageView(originalImage);
         imageView.setPreserveRatio(true);
 
-        // Create a stack pane to center the image
         StackPane imagePane = new StackPane(imageView);
         imagePane.setAlignment(Pos.CENTER);
 
-        // Set up image dragging
         setupImageDragging(imagePane);
 
-        // Create a scroll pane to hold the image view
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(imagePane);
         scrollPane.setPannable(true);
@@ -153,14 +144,11 @@ public class ImageViewer {
      * Updates the image view with the current rotation and zoom values
      */
     private void updateImageView() {
-        // Apply rotation
         imageView.setRotate(rotation);
 
-        // Apply zoom
         double newWidth = originalImage.getWidth() * zoomFactor;
         imageView.setFitWidth(newWidth);
 
-        // Preserve aspect ratio
         imageView.setPreserveRatio(true);
     }
 

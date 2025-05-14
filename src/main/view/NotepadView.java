@@ -68,7 +68,6 @@ public class NotepadView {
 	}
 	
 	public void saveFile() {
-		// If editing an existing file, update that file
 		if (txtFile != null) {
 			try (PrintWriter writer = new PrintWriter(new FileWriter(txtFile), false)) {
 				writer.print(txtArea.getText());
@@ -78,7 +77,6 @@ public class NotepadView {
 			return;
 		}
 		
-		// Create new file if txtFile is null
 		String saveDirectory = getClass().getResource("/files").getPath();
 		
 		File directory = new File(saveDirectory);
@@ -90,14 +88,12 @@ public class NotepadView {
 		saveFileDialog.setContentText("Rename file:");
 		Optional<String> result = saveFileDialog.showAndWait();
 		result.ifPresent(fileName -> {
-			// Check if filename is alphanumeric and has .txt extension
 			if (!fileName.matches("^[a-zA-Z0-9]+\\.txt$")) {
 				Utils.showAlert("File name is invalid", "File name is not alphanumeric!");
 				saveFile();
 				return;
 			}
 
-			// Check if file already exists
 			File file = new File(saveDirectory +  fileName);
 			if (file.exists()) {
 				Utils.showAlert("File with that name is aready exists!", "A file with that name has already been made");
