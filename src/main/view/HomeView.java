@@ -242,7 +242,7 @@ public class HomeView {
 		shortcut.setOnMouseClicked(e -> {
 			if (e.getClickCount() == 2) {
 				if (Utils.isTextFile(file)) {
-					new NotepadView(this).show(file);
+					new NotepadView(this, file).show();
 				} else if (Utils.isImageFile(file)) {
 					new ImageViewer(this).show(file);
 				}
