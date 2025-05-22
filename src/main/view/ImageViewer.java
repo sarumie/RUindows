@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 
 public class ImageViewer {
     private Stage stage;
-    private HomeView homeView;
     private File imageFile;
     private ImageView imageView;
     private double rotation = 0;
@@ -31,8 +30,7 @@ public class ImageViewer {
      * Constructor for the ImageViewer
      * @param homeView Reference to the HomeView
      */
-    public ImageViewer(HomeView homeView) {
-        this.homeView = homeView;
+    public ImageViewer() {
         this.stage = new Stage();
     }
 

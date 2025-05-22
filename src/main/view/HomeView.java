@@ -7,7 +7,6 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -24,8 +23,6 @@ public class HomeView {
 	private FlowPane taskbarPane = new FlowPane();
 	private ImageView windowsIcon = new ImageView(new Image("/style/resources/icons/window-icon.png"));
 	private ImageView notepadIcon = new ImageView(new Image("/style/resources/icons/notepad-icon.png"));
-	private Menu windows = new Menu();
-	private Menu notepad = new Menu();
 	
 	private final int ICON_SIZE = 104;
 	private final int SHORTCUT_SIZE = 40 + ICON_SIZE;
@@ -288,7 +285,7 @@ public class HomeView {
 				if (Utils.isTextFile(file)) {
 					new NotepadView(this, file).show();
 				} else if (Utils.isImageFile(file)) {
-					new ImageViewer(this).show(file);
+					new ImageViewer().show(file);
 				}
 			}
 		});

@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.util.Optional;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
