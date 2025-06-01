@@ -26,18 +26,11 @@ public class ImageViewer {
     private double dragStartX, dragStartY;
     private double translateX, translateY;
 
-    /**
-     * Constructor for the ImageViewer
-     * @param homeView Reference to the HomeView
-     */
+
     public ImageViewer() {
         this.stage = new Stage();
     }
 
-    /**
-     * Shows the ImageViewer with the specified image file
-     * @param file The image file to display
-     */
     public void show(File file) {
         if (file == null) {
             return;
@@ -45,7 +38,6 @@ public class ImageViewer {
 
         this.imageFile = file;
 
-        // Set up the stage
         stage.setTitle(file.getName());
         stage.setScene(createScene());
         stage.setWidth(800);
@@ -53,10 +45,6 @@ public class ImageViewer {
         stage.show();
     }
 
-    /**
-     * Creates and returns the scene for the ImageViewer
-     * @return The scene for the ImageViewer
-     */
     private Scene createScene() {
         BorderPane root = new BorderPane();
 
@@ -110,10 +98,6 @@ public class ImageViewer {
         return new Scene(root);
     }
 
-    /**
-     * Sets up image dragging capability
-     * @param imagePane The pane containing the image
-     */
     private void setupImageDragging(StackPane imagePane) {
         imagePane.setOnMousePressed(event -> {
             dragStartX = event.getSceneX();
@@ -130,17 +114,11 @@ public class ImageViewer {
         });
     }
 
-    /**
-     * Rotates the image by 90 degrees
-     */
     private void rotate() {
         rotation = (rotation + 90) % 360;
         updateImageView();
     }
 
-    /**
-     * Updates the image view with the current rotation and zoom values
-     */
     private void updateImageView() {
         imageView.setRotate(rotation);
 
@@ -150,10 +128,6 @@ public class ImageViewer {
         imageView.setPreserveRatio(true);
     }
 
-    /**
-     * Returns the stage of this ImageViewer
-     * @return The stage
-     */
     public Stage getStage() {
         return stage;
     }

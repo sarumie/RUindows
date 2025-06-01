@@ -32,11 +32,7 @@ public class HomeView {
 		{"Notepad", "/style/resources/icons/notepad-icon.png"},
 		{"Browser", "/style/resources/icons/chrome.png"}
 	};
-	
-	/**
-	 * Creates and returns the main scene
-	 * @return The main application scene
-	 */
+
 	public Scene getScene() {
 		BorderPane root = new BorderPane();
 		
@@ -60,9 +56,6 @@ public class HomeView {
 		return new Scene(root, 1920, 1080);
 	}
 	
-	/**
-	 * Sets up the taskbar with icons and menus
-	 */
 	private void setupTaskbar() {
 		
 		taskbarPane.setId("taskbar");
@@ -158,19 +151,14 @@ public class HomeView {
 		taskbarPane.getChildren().addAll(windowsButton, notepadButton);
 	}
 	
-	/**
-	 * Loads default system applications as shortcuts
-	 */
 	private void loadDefaultApps() {
 		for (String[] app : DEFAULT_APPS) {
 			VBox shortcut = createAppShortcut(app[0], app[1]);
 			shortcuts.getChildren().add(shortcut);
 		}
 	}
-	
-	/**
-	 * Loads files from the /files directory and adds them as shortcuts
-	 */
+
+
 	private void loadFilesAsShortcuts() {
 		File[] files = new File(getClass().getResource("/files").getFile()).listFiles();
 		
@@ -186,12 +174,6 @@ public class HomeView {
 		}
 	}
 	
-	/**
-	 * Creates a shortcut for system applications
-	 * @param appName Name of the application
-	 * @param iconPath Path to the application icon
-	 * @return VBox containing the shortcut
-	 */
 	private VBox createAppShortcut(String appName, String iconPath) {
 		VBox shortcut = new VBox();
 		ImageView shortcutImgView = new ImageView(new Image(iconPath));
@@ -224,10 +206,6 @@ public class HomeView {
 		return shortcut;
 	}
 	
-	/**
-	 * Launches the appropriate application based on the application name
-	 * @param appName Name of the application to launch
-	 */
 	private void launchApplication(String appName) {
 		switch (appName) {
 			case "Notepad":
@@ -236,17 +214,9 @@ public class HomeView {
 			case "Browser":
 				new BrowserView(this).show();
 				break;
-			case "Trash":
-				// Trash functionality to be implemented
-				break;
 		}
 	}
-	
-	/**
-	 * Creates a shortcut for a file
-	 * @param file The file to create a shortcut for
-	 * @return VBox containing the shortcut or null if file type is not supported
-	 */
+
 	private VBox createFileShortcut(File file) {
 		Image img;
 		
@@ -293,20 +263,11 @@ public class HomeView {
 		return shortcut;
 	}
 	
-	/**
-	 * Adds a new application shortcut to the desktop
-	 * @param appName Name of the application
-	 * @param iconPath Path to the application icon
-	 */
 	public void addAppShortcut(String appName, String iconPath) {
 		VBox shortcut = createAppShortcut(appName, iconPath);
 		shortcuts.getChildren().add(shortcut);
 	}
-	
-	/**
-	 * Adds a new file shortcut to the desktop
-	 * @param file File to add as shortcut
-	 */
+
 	public void addFileShortcut(File file) {
 		VBox shortcut = createFileShortcut(file);
 		if (shortcut != null) {
@@ -314,19 +275,12 @@ public class HomeView {
 		}
 	}
 	
-	/**
-	 * Removes all shortcuts and reloads them
-	 */
 	public void refreshShortcuts() {
 		shortcuts.getChildren().clear();
 		loadDefaultApps();
 		loadFilesAsShortcuts();
 	}
 	
-	/**
-	 * Get access to the shortcuts FlowPane
-	 * @return The shortcuts FlowPane
-	 */
 	public FlowPane getShortcutsPane() {
 		return shortcuts;
 	}

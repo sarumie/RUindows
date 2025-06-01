@@ -40,16 +40,12 @@ public class Utils {
     public static void deepClearChildren(Parent parent) {
         if (parent == null) return;
         
-        // Get a copy of the children list to avoid ConcurrentModificationException
         List<Node> childrenCopy = new ArrayList<>(parent.getChildrenUnmodifiable());
         
         for (Node child : childrenCopy) {
-            // If this child is also a parent, clear its children first
             if (child instanceof Parent) {
                 deepClearChildren((Parent) child);
             }
-            
-            // Remove the child from its parent
             if (parent instanceof Pane) {
                 ((Pane) parent).getChildren().remove(child);
             } else if (parent instanceof Group) {

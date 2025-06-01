@@ -77,7 +77,6 @@ public class BrowserView {
 		Utils.deepClearChildren(main);
 		main.setId("");
 		if (url.equals("RUtube.net")) {
-		// if (url.equals("r")) {
 			main.setId("mainRUtube");
 			
 			FlowPane navbar = new FlowPane();

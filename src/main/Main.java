@@ -12,10 +12,8 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage ps) throws Exception {
-//		new BrowserView().show();
 		ps.setScene(new LoginView().getScene());
-//		ps.setScene(new HomeView().getScene());
-		ps.setTitle("Home");
+		ps.setTitle("Login");
 		ps.show();
 	}
 }
