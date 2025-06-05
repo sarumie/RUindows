@@ -21,6 +21,8 @@ public class LoginView {
 	PasswordField pField = new PasswordField();
 	Button btnLogin  = new Button("Login");
 	
+	String password = "user123";
+	
 	public Scene getScene() {
 		pp.setImage(new Image("/style/resources/icons/default_profile_pic.png", 200, 200, true, false));
 		
@@ -39,7 +41,7 @@ public class LoginView {
 		
 		// Validate
 		btnLogin.setOnMouseClicked(e -> {
-			if (!pField.getText().trim().equals("owo")) {
+			if (!pField.getText().trim().equals(password)) {
 				errLabel.setVisible(true);
 				return;
 			}
