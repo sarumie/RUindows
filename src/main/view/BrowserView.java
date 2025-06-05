@@ -208,7 +208,6 @@ public class BrowserView {
 				try {
 					ImageIO.write(SwingFXUtils.fromFXImage(image, null), "jpg", outputFile);
 					
-					System.out.println("Downloaded: " + fileName);
 					homeView.addFileShortcut(outputFile);
 				} catch (Exception ex) {
 					System.err.println("Error saving image: " + ex.getMessage());
